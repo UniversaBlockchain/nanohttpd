@@ -79,7 +79,7 @@ public class HTTPSession implements IHTTPSession {
 
     private static final int DEFAULT_MEMORY_STORE_LIMIT = 1024;
 
-    public static final int BUFSIZE = 65536;
+    public static final int BUFSIZE = 2_097_152; // 2 Mb
 
     public static final int MAX_HEADER_SIZE = 1024;
 

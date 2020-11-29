@@ -1,6 +1,6 @@
 //allprojects {
     group 'com.icodici'
-    version = '2.1.0-20201129a'
+    version = '2.1.0-20201129b'
 
     apply plugin: 'java'
 
