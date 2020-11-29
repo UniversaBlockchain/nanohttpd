@@ -1,18 +1,73 @@
-apply plugin: 'java'
+//allprojects {
+    group 'com.icodici'
+    version = '2.1.0-20201129a'
 
-version = '2.1.0'
+    apply plugin: 'java'
 
-jar {
-    baseName = 'nanohttpd'
-}
 
-repositories {
-    mavenCentral()
-}
+    jar {
+        baseName = 'nanohttpd'
+    }
 
-dependencies {
-    testCompile group: 'junit', name: 'junit', version: '4.8.2'
-    testCompile group: 'org.apache.httpcomponents', name: 'httpclient', version: '4.2.5'
-    testCompile group: 'org.apache.httpcomponents', name: 'httpmime', version: '4.2.5'
-}
+    repositories {
+        mavenCentral()
+        maven { url = "https://maven.universablockchain.com/" }
+    }
 
+
+    dependencies {
+        testCompile group: 'junit', name: 'junit', version: '4.13.1'
+        testCompile group: 'org.apache.httpcomponents', name: 'httpclient', version: '4.3.6'
+        testCompile group: 'org.apache.httpcomponents', name: 'httpmime', version: '4.3.6'
+    }
+
+//}
+
+//configure(subprojects.findAll { it.name != 'integration-tests' }) {
+
+    // Publish to pvt-maven.universablockchain.com
+
+    apply plugin: 'maven-publish'
+
+    task sourcesJar(type: Jar) {
+        classifier = 'sources'
+        from sourceSets.main.allSource
+    }
+
+    task testJar(type: Jar) {
+        classifier = 'tests'
+        from sourceSets.test.output
+    }
+
+//    task javadocJar(type: Jar) {
+//        classifier = 'javadoc'
+//        from javadoc
+//    }
+
+//    javadoc {
+//        if (JavaVersion.current().isJava9Compatible()) {
+//            options.addBooleanOption('html4', true)
+//        }
+//    }
+
+    publishing {
+        publications {
+            mavenJava(MavenPublication) {
+                from components.java
+
+                artifact sourcesJar
+                artifact testJar
+//                artifact javadocJar
+            }
+        }
+        repositories {
+            maven {
+                url = "https://maven.universablockchain.com/"
+                credentials {
+                    username "$pvtMavenUniversaIoUser"
+                    password "$pvtMavenUniversaIoPassword"
+                }
+            }
+        }
+    }
+//}
